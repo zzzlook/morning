@@ -8,18 +8,27 @@ import random
 
 today = datetime.now()
 start_date = os.environ['START_DATE']
-city = os.environ['CITY']
+city1 = os.environ['CITY1']
+city2 = os.environ['CITY2']
 birthday = os.environ['BIRTHDAY']
 
 app_id = os.environ["APP_ID"]
 app_secret = os.environ["APP_SECRET"]
 
 user_id = os.environ["USER_ID"]
+user_id1 = os.environ["USER_ID1"]
 template_id = os.environ["TEMPLATE_ID"]
 
 
-def get_weather():
-  url = "https://restapi.amap.com/v3/weather/weatherInfo?key=dea7a9c908b78514f61678bce2969a8f&city="+city+"&extensions=all&output=JSON" 
+def get_weather_sz():
+  url = "https://restapi.amap.com/v3/weather/weatherInfo?key=dea7a9c908b78514f61678bce2969a8f&city="+city1+"&extensions=all&output=JSON"
+  res = requests.get(url).json()
+  weather = res['forecasts'][0]['casts'][0]['dayweather']
+  temp=res['forecasts'][0]['casts'][0]['daytemp']
+  return weather, int(temp)
+
+def get_weather_tz():
+  url = "https://restapi.amap.com/v3/weather/weatherInfo?key=dea7a9c908b78514f61678bce2969a8f&city="+city2+"&extensions=all&output=JSON"
   res = requests.get(url).json()
   weather = res['forecasts'][0]['casts'][0]['dayweather']
   temp=res['forecasts'][0]['casts'][0]['daytemp']
@@ -41,14 +50,16 @@ def get_words():
     return get_words()
   return words.json()['data']['text']
 
-def get_random_color():
-  return "#%06x" % random.randint(0, 0xFFFFFF)
+
+
 
 
 client = WeChatClient(app_id, app_secret)
 
 wm = WeChatMessage(client)
-wea, temperature = get_weather()
-data = {"weather":{"value":wea},"temperature":{"value":temperature},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"words":{"value":get_words(), "color":get_random_color()}}
-res = wm.send_template(user_id, template_id, data)
+wea_sz, temperature_sz = get_weather_sz()
+wea_tz, temperature_tz = get_weather_tz()
+data = {"weather_tz":{"value":wea_tz},"weather_sz":{"value":wea_sz},"temperature_tz":{"value":temperature_tz},"temperature_sz":{"value":temperature_sz},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"words":{"value":get_words()}}
+res = wm.send_template(user_id, template_id,data)
+res = wm.send_template(user_id1,template_id,data)
 print(res)
