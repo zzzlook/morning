@@ -23,7 +23,7 @@ def get_weather():
   res = requests.get(url).json()
   weather = res['forecasts'][0]['casts'][0]['dayweather']
   temp=res['forecasts'][0]['casts'][0]['daytemp']
-  return weather['weather'], math.floor(temp)
+  return weather, math.floor(temp)
 
 def get_count():
   delta = today - datetime.strptime(start_date, "%Y-%m-%d")
