@@ -7,17 +7,18 @@ import os
 import random
 
 today = datetime.now()
-start_date = os.environ['START_DATE']
-# city1 = os.environ['CT']
-city2 = os.environ['CITY']
-birthday = os.environ['BIRTHDAY']
+start_date = "2022-06-17"
+city1 = "320500"
+city2 = "321200"
+birthday = "10-12"
 
-app_id = os.environ["APP_ID"]
-app_secret = os.environ["APP_SECRET"]
+app_id = "wx710158a88bfc7811"
+app_secret = "9fb690deeb637581335def30e93e9d70"
 
-user_id = os.environ["USER_ID"]
-user_id1 = os.environ["USER_ID1"]
-template_id = os.environ["TEMPLATE_ID"]
+user_id = "omOO85wISm1kjxWfH0to9w7fj-J8"
+user_id1="omOO85wVeDdkIiSyBVfsAmysd9aM"
+template_id = "oof6aFq59217kj7MezbLey3wY9uf8g6vQs0r6WsMx_U"
+
 
 
 def get_weather_sz():
